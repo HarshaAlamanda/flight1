@@ -830,29 +830,41 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
+// API Base URL - automatically detects if running locally or deployed
+const API_BASE_URL = window.location.hostname === 'localhost' ? 
+    'http://localhost:3000' : 
+    window.location.origin;
+
 // Air India API Integration Simulation
 class AuroraAirwaysAPI {
     static async searchFlights(params) {
-        // Simulate API call to Air India/Travelport Universal API
-        console.log('Making API call to Aurora Airways (Air India) with params:', params);
-        
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Return simulated response in Air India API format
-        return {
-            success: true,
-            data: {
-                searchId: 'AUR' + Date.now(),
+        // Make actual API call to our backend
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/flights/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Flight search failed');
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error('API Error:', error);
+            // Fallback to simulated data
+            return {
+                success: true,
                 flights: flightData.filter(flight => 
                     flight.departure.airport === params.from &&
                     flight.arrival.airport === params.to
                 ),
-                totalResults: flightData.length,
-                currency: 'INR',
-                timestamp: new Date().toISOString()
-            }
-        };
+                searchId: 'AUR' + Date.now()
+            };
+        }
     }
     
     static async priceFlights(flightIds) {

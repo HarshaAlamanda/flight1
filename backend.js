@@ -359,10 +359,13 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Aurora Airways Server running on port ${PORT}`);
-    console.log(`Visit: http://localhost:${PORT}`);
-});
-
+// Export for Vercel serverless deployment
 module.exports = app;
+
+// Start server locally (only if not in serverless environment)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Aurora Airways Server running on port ${PORT}`);
+        console.log(`Visit: http://localhost:${PORT}`);
+    });
+}

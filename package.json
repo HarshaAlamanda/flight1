@@ -7,7 +7,9 @@
     "start": "node backend.js",
     "dev": "nodemon backend.js",
     "test": "jest",
-    "build": "npm install"
+    "build": "npm install",
+    "deploy": "vercel --prod",
+    "vercel-build": "echo 'Building for production...'"
   },
   "keywords": [
     "flight-booking",
