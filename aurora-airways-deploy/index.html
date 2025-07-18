@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Airways - Your Journey Begins Here</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-plane-departure brand-icon"></i>
+                <span class="brand-text">Aurora Airways</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#flights" class="nav-link">Flights</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <div class="nav-auth">
+                    <button class="btn-login" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signupModal')">Sign Up</button>
+                </div>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Discover the World with Aurora Airways</h1>
+            <p class="hero-subtitle">Premium flights at affordable prices. Your journey to extraordinary begins here.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <h3>150+</h3>
+                    <p>Destinations</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Support</p>
+                </div>
+                <div class="stat">
+                    <h3>5M+</h3>
+                    <p>Happy Travelers</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Airplane" />
+        </div>
+    </section>
+
+    <!-- Flight Search Section -->
+    <section id="flights" class="flight-search">
+        <div class="container">
+            <h2 class="section-title">Search Flights</h2>
+            <div class="search-container">
+                <!-- Trip Type Selection -->
+                <div class="trip-type">
+                    <label class="radio-label">
+                        <input type="radio" name="tripType" value="oneWay" checked>
+                        <span>One Way</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="tripType" value="roundTrip">
+                        <span>Round Trip</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="tripType" value="multiCity">
+                        <span>Multi City</span>
+                    </label>
+                </div>
+
+                <!-- Search Form -->
+                <form class="search-form" id="searchForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>From</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-plane-departure"></i>
+                                <input type="text" id="fromCity" placeholder="Departure city" required>
+                                <div class="suggestions" id="fromSuggestions"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>To</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-plane-arrival"></i>
+                                <input type="text" id="toCity" placeholder="Destination city" required>
+                                <div class="suggestions" id="toSuggestions"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Departure</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-calendar"></i>
+                                <input type="date" id="departureDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group return-date" style="display: none;">
+                            <label>Return</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-calendar"></i>
+                                <input type="date" id="returnDate">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Passengers</label>
+                            <div class="passenger-selector" onclick="togglePassengerDropdown()">
+                                <i class="fas fa-users"></i>
+                                <span id="passengerText">1 Adult</span>
+                                <i class="fas fa-chevron-down"></i>
+                                <div class="passenger-dropdown" id="passengerDropdown">
+                                    <div class="passenger-type">
+                                        <span>Adults (12+)</span>
+                                        <div class="counter">
+                                            <button type="button" onclick="updatePassenger('adults', -1)">-</button>
+                                            <span id="adultsCount">1</span>
+                                            <button type="button" onclick="updatePassenger('adults', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="passenger-type">
+                                        <span>Children (2-11)</span>
+                                        <div class="counter">
+                                            <button type="button" onclick="updatePassenger('children', -1)">-</button>
+                                            <span id="childrenCount">0</span>
+                                            <button type="button" onclick="updatePassenger('children', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="passenger-type">
+                                        <span>Infants (0-2)</span>
+                                        <div class="counter">
+                                            <button type="button" onclick="updatePassenger('infants', -1)">-</button>
+                                            <span id="infantsCount">0</span>
+                                            <button type="button" onclick="updatePassenger('infants', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Class</label>
+                            <select id="travelClass">
+                                <option value="economy">Economy</option>
+                                <option value="premium">Premium Economy</option>
+                                <option value="business">Business</option>
+                                <option value="first">First Class</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-search">
+                                <i class="fas fa-search"></i>
+                                Search Flights
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flight Results Section -->
+    <section class="flight-results" id="flightResults" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Available Flights</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sortBy">
+                        <option value="price">Price (Low to High)</option>
+                        <option value="duration">Duration</option>
+                        <option value="departure">Departure Time</option>
+                        <option value="arrival">Arrival Time</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Stops:</label>
+                    <select id="stopFilter">
+                        <option value="all">All Flights</option>
+                        <option value="nonstop">Non-stop</option>
+                        <option value="onestop">1 Stop</option>
+                        <option value="twostop">2+ Stops</option>
+                    </select>
+                </div>
+            </div>
+            <div class="results-container" id="resultsContainer">
+                <!-- Flight results will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Travel Insurance</h3>
+                    <p>Comprehensive coverage for your peace of mind during travel.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>In-flight Dining</h3>
+                    <p>Gourmet meals and beverages crafted by renowned chefs.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-wifi"></i>
+                    <h3>Free Wi-Fi</h3>
+                    <p>Stay connected with complimentary high-speed internet.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-tv"></i>
+                    <h3>Entertainment</h3>
+                    <p>Extensive library of movies, TV shows, and music.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-bed"></i>
+                    <h3>Comfort Plus</h3>
+                    <p>Extra legroom and premium amenities for enhanced comfort.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-headphones"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer assistance whenever you need it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Aurora Airways</h2>
+                    <p>Founded with a vision to make air travel accessible and enjoyable for everyone, Aurora Airways has been connecting people and places for over two decades. We pride ourselves on delivering exceptional service, safety, and value to our passengers.</p>
+                    <p>Our modern fleet of aircraft, experienced crew, and commitment to innovation ensure that your journey with us is comfortable, safe, and memorable. From domestic routes to international destinations, we're here to take you where you need to go.</p>
+                    <div class="achievements">
+                        <div class="achievement">
+                            <h3>99.5%</h3>
+                            <p>On-time Performance</p>
+                        </div>
+                        <div class="achievement">
+                            <h3>4.8/5</h3>
+                            <p>Customer Rating</p>
+                        </div>
+                        <div class="achievement">
+                            <h3>Zero</h3>
+                            <p>Safety Incidents</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Aircraft maintenance" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+1 (800) 123-4567</p>
+                            <p>Available 24/7</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>support@auroraairways.com</p>
+                            <p>Response within 24 hours</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Headquarters</h3>
+                            <p>123 Aviation Boulevard</p>
+                            <p>Sky City, SC 12345</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="">Select Subject</option>
+                            <option value="booking">Booking Inquiry</option>
+                            <option value="refund">Refund Request</option>
+                            <option value="complaint">Complaint</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-plane-departure"></i>
+                        <span>Aurora Airways</span>
+                    </div>
+                    <p>Making your travel dreams come true with exceptional service and competitive prices.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#flights">Book Flight</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Baggage Info</a></li>
+                        <li><a href="#">Check-in</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aurora Airways. All rights reserved. | Powered by Advanced Flight Technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to Aurora Airways</h2>
+            <form class="auth-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'signupModal')">Sign up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Join Aurora Airways</h2>
+            <form class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-submit">Create Account</button>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="switchModal('signupModal', 'loginModal')">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flight Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content booking-modal">
+            <span class="close" onclick="closeModal('bookingModal')">&times;</span>
+            <h2>Complete Your Booking</h2>
+            <div class="booking-content">
+                <div class="booking-summary" id="bookingSummary">
+                    <!-- Flight details will be populated here -->
+                </div>
+                <form class="booking-form" id="bookingForm">
+                    <h3>Passenger Information</h3>
+                    <div id="passengerForms">
+                        <!-- Passenger forms will be generated here -->
+                    </div>
+                    
+                    <h3>Payment Information</h3>
+                    <div class="payment-methods">
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="card" checked>
+                            <span>Credit/Debit Card</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="paypal">
+                            <span>PayPal</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="bank">
+                            <span>Bank Transfer</span>
+                        </label>
+                    </div>
+                    
+                    <div class="payment-form" id="cardPayment">
+                        <div class="form-group">
+                            <input type="text" placeholder="Card Number" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="CVV" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Cardholder Name" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Complete Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Searching for flights...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
